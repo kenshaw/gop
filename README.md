@@ -8,6 +8,8 @@ jars/classes contained within.
 gop is mostly useful for quickly inspecting the contained java classes within a
 jar.
 
+**NOTE:** `javap` must exist somewhere on your `$PATH` to use gop.
+
 # Installation
 
 Install in the usual Go way:
