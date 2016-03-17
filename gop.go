@@ -15,11 +15,12 @@ import (
 
 // ArgType are the command line arguments.
 type ArgType struct {
-	JarFile string `arg:"positional,required,help:jar file"`
+	JarFile string   `arg:"positional,required,help:jar file"`
+	Extra   []string `arg:"positional,help:extra parameters to pass to javap"`
 }
 
 // processJar processes a jar file.
-func processJar(jarPath, tmpDir, origName string) error {
+func processJar(args *ArgType, jarPath, tmpDir, origName string) error {
 	var err error
 
 	// open jar
@@ -66,7 +67,7 @@ func processJar(jarPath, tmpDir, origName string) error {
 			}
 
 			// defer processing of jar
-			defer processJar(tf.Name(), tmpDir, path.Join(origName, f.Name))
+			defer processJar(args, tf.Name(), tmpDir, path.Join(origName, f.Name))
 
 		case "class":
 			// determine class name
@@ -78,7 +79,9 @@ func processJar(jarPath, tmpDir, origName string) error {
 			}
 
 			// execute javap on class
-			c := exec.Command("javap", "-classpath", jarPath, "-p", n)
+			v := append([]string{"-classpath", jarPath}, args.Extra...)
+			v = append(v, n)
+			c := exec.Command("javap", v...)
 			out, err := c.Output()
 			if err != nil {
 				return err
@@ -101,6 +104,16 @@ func main() {
 	args := &ArgType{}
 	arg.MustParse(args)
 
+	// replace ^ with - (issue with go-arg)
+	for i, v := range args.Extra {
+		args.Extra[i] = strings.Replace(v, "^", "-", -1)
+	}
+
+	// set default value for Extra
+	if args.Extra == nil || len(args.Extra) == 0 {
+		args.Extra = append([]string{"-p"}, args.Extra...)
+	}
+
 	// create tempDir
 	tmpDir, err := ioutil.TempDir(os.TempDir(), "gop")
 	if err != nil {
@@ -109,7 +122,7 @@ func main() {
 	}
 
 	// process jar
-	err = processJar(args.JarFile, tmpDir, args.JarFile)
+	err = processJar(args, args.JarFile, tmpDir, args.JarFile)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)

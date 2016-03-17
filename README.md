@@ -5,7 +5,7 @@ to output all the class information contained within a jar/aar (ie, a zip
 file). gop will also traverse the zip and extract the information for all
 jars/classes contained within.
 
-gop is mostly useful for quickly inspecting the contained java classes within a
+gop is mostly useful for quickly inspecting the java classes contained within a
 jar.
 
 **NOTE:** `javap` must exist somewhere on your `$PATH` to use gop.
