@@ -24,6 +24,7 @@ type ArgType struct {
 	JarFile string   `arg:"positional,required,help:jar file"`
 	Extra   []string `arg:"positional,help:extra parameters to pass to javap"`
 	Glob    string   `arg:"--only,help:only process matching classes matching specified glob"`
+	GlobNot string   `arg:"--excl,help:exclusion glob"`
 	Dex2Jar string   `arg:"--dex2jar,help:path to dex2jar executable"`
 }
 
@@ -124,6 +125,11 @@ func processJar(args *ArgType, jarPath, tmpDir, origName string) error {
 
 			// skip if classname doesn't match glob
 			if args.Glob != "" && !glob.Glob(args.Glob, n) {
+				continue
+			}
+
+			// skip if classname matches excluded glob
+			if args.GlobNot != "" && glob.Glob(args.GlobNot, n) {
 				continue
 			}
 
