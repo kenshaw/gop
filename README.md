@@ -8,10 +8,17 @@ jars/classes contained within.
 gop is mostly useful for quickly inspecting the contained java classes within a
 jar.
 
+# Installation
+
+Install in the usual Go way:
+```sh
+go get -u github.com/knq/gop
+```
+
 # Usage
 
 ```sh
-$ ./gop --help
+$ gop --help
 usage: gop JARFILE
 
 positional arguments:
@@ -19,4 +26,9 @@ positional arguments:
 
 options:
   --help, -h             display this help and exit
+
+$ gop /path/to/file.jar
+
+# syntax highlight output
+$ gop /path/to/file.jar |pygmentize -l java
 ```

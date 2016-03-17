@@ -85,7 +85,7 @@ func processJar(jarPath, tmpDir, origName string) error {
 			}
 
 			// output data
-			fmt.Fprintf(os.Stdout, "// %s from %s\n// ", n, origName)
+			fmt.Fprintf(os.Stdout, "// class '%s' from '%s'\n// ", n, path.Join(origName, f.Name))
 			os.Stdout.Write(out)
 			fmt.Fprint(os.Stdout, "\n")
 		}
