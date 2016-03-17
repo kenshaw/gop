@@ -34,7 +34,7 @@ options:
 $ gop /path/to/file.jar
 
 # syntax highlight output
-$ gop /path/to/file.jar |pygmentize -l java
+$ gop /path/to/file.jar |pygmentize -l java -s
 
 # only display classes matching glob
 $ gop /path/to/file.jar --only 'go.client.*'
