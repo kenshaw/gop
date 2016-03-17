@@ -11,12 +11,14 @@ import (
 	"strings"
 
 	"github.com/alexflint/go-arg"
+	"github.com/ryanuber/go-glob"
 )
 
 // ArgType are the command line arguments.
 type ArgType struct {
 	JarFile string   `arg:"positional,required,help:jar file"`
 	Extra   []string `arg:"positional,help:extra parameters to pass to javap"`
+	Glob    string   `arg:"--only,help:only process matching classes matching specified glob"`
 }
 
 // processJar processes a jar file.
@@ -76,6 +78,11 @@ func processJar(args *ArgType, jarPath, tmpDir, origName string) error {
 			n = n[:len(n)-len(ext)]
 			if d != "" {
 				n = strings.Replace(d, "/", ".", -1) + "." + n
+			}
+
+			// skip if classname doesn't match glob
+			if args.Glob != "" && !glob.Glob(args.Glob, n) {
+				continue
 			}
 
 			// execute javap on class

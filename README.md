@@ -21,16 +21,21 @@ go get -u github.com/knq/gop
 
 ```sh
 $ gop --help
-usage: gop JARFILE
+usage: gop [--only ONLY] JARFILE [EXTRA [EXTRA ...]]
 
 positional arguments:
   jarfile                jar file
+  extra                  extra parameters to pass to javap
 
 options:
+  --only ONLY            only process matching classes matching specified glob
   --help, -h             display this help and exit
 
 $ gop /path/to/file.jar
 
 # syntax highlight output
 $ gop /path/to/file.jar |pygmentize -l java
+
+# only display classes matching glob
+$ gop /path/to/file.jar --only 'go.client.*'
 ```
