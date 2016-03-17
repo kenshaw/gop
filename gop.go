@@ -111,7 +111,7 @@ func main() {
 
 	// set default value for Extra
 	if args.Extra == nil || len(args.Extra) == 0 {
-		args.Extra = append([]string{"-p"}, args.Extra...)
+		args.Extra = []string{"-p", "-constants"}
 	}
 
 	// create tempDir
