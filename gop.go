@@ -2,6 +2,7 @@ package main
 
 import (
 	"archive/zip"
+	"bytes"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -136,7 +137,10 @@ func processJar(args *ArgType, jarPath, tmpDir, origName string) error {
 			}
 
 			// output data
-			fmt.Fprintf(os.Stdout, "// class '%s' from '%s'\n// ", n, path.Join(origName, f.Name))
+			fmt.Fprintf(os.Stdout, "// class '%s' from '%s'\n", n, path.Join(origName, f.Name))
+			if bytes.HasPrefix(out, []byte("Compiled from ")) {
+				os.Stdout.Write([]byte("// "))
+			}
 			os.Stdout.Write(out)
 			fmt.Fprint(os.Stdout, "\n")
 		}
