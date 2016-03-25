@@ -24,7 +24,7 @@ type ArgType struct {
 	JarFile string   `arg:"positional,required,help:jar file"`
 	Extra   []string `arg:"positional,help:extra parameters to pass to javap"`
 	Glob    string   `arg:"--only,help:only process matching classes matching specified glob"`
-	GlobNot string   `arg:"--excl,help:exclusion glob"`
+	GlobNot string   `arg:"--not,help:exclusion glob"`
 	Dex2Jar string   `arg:"--dex2jar,help:path to dex2jar executable"`
 }
 
